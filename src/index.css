@@ -371,9 +371,9 @@ body {
 .progress-bar {
   width: 100%;
   height: 8px;
+  margin: 20px 0 0;
   background-color: #eee;
   border-radius: 4px;
-  margin-bottom: 20px;
   overflow: hidden;
 }
 

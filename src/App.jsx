@@ -1,47 +1,96 @@
-import { useState, useEffect, useRef } from "react";
-import "./index.css";
+import { useState, useEffect, useRef } from "react"
+import "./index.css"
 
 export default function App() {
-  const [recommendation, setRecommendation] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const carouselRef = useRef(null);
-  const [closing, setClosing] = useState(false);
-  const [showProfileModal, setShowProfileModal] = useState(false);
-  const [showReservationsModal, setShowReservationsModal] = useState(false);
+  const [recommendation, setRecommendation] = useState(null)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null)
+  const [isPaused, setIsPaused] = useState(false)
+  const carouselRef = useRef(null)
+  const [closing, setClosing] = useState(false)
+  const [showProfileModal, setShowProfileModal] = useState(false)
+  const [showReservationsModal, setShowReservationsModal] = useState(false)
 
   // New state for Find Me a Place modal
-  const [showFindModal, setShowFindModal] = useState(false);
-  const [findStep, setFindStep] = useState(0);
+  const [showFindModal, setShowFindModal] = useState(false)
+  const [findStep, setFindStep] = useState(0)
 
   // Add to your state for form answers
   const [formAnswers, setFormAnswers] = useState({
     foodPreference: "",
     atmosphere: [], // array to store selected atmosphere options
-    // other answers will come later
-  });
+    // Step 3: price range (1=budget, 4=premium)
+    priceRange: 2,
+    // Step 4: allergies/diets
+    diets: [],
+    allergiesOther: "",
+    // Step 5: distance & location
+    distanceKm: 5,
+    locationMode: "current", // 'current' | 'custom'
+    customLocation: "",
+  })
 
   // Handler for atmosphere checkboxes
   const handleAtmosphereChange = (option) => {
     setFormAnswers((prev) => {
-      const exists = prev.atmosphere.includes(option);
+      const exists = prev.atmosphere.includes(option)
       const newAtmosphere = exists
         ? prev.atmosphere.filter((o) => o !== option) // uncheck
-        : [...prev.atmosphere, option]; // check
-      return { ...prev, atmosphere: newAtmosphere };
-    });
-  };
+        : [...prev.atmosphere, option] // check
+      return { ...prev, atmosphere: newAtmosphere }
+    })
+  }
 
   // Handler for the first question input
   const handleFoodPreferenceChange = (e) => {
-    setFormAnswers({ ...formAnswers, foodPreference: e.target.value });
-  };
+    setFormAnswers({ ...formAnswers, foodPreference: e.target.value })
+  }
 
   // Handler to move to next form step
   const goToNextStep = () => {
-    setFindStep(findStep + 1);
-  };
+    setFindStep(findStep + 1)
+  }
+
+  // Step 3: price range handler
+  const handlePriceChange = (e) => {
+    const value = Number(e.target.value)
+    setFormAnswers((prev) => ({ ...prev, priceRange: value }))
+  }
+
+  // Step 4: diets/allergies handlers
+  const toggleDiet = (option) => {
+    setFormAnswers((prev) => {
+      const exists = prev.diets.includes(option)
+      const newDiets = exists
+        ? prev.diets.filter((d) => d !== option)
+        : [...prev.diets, option]
+      return { ...prev, diets: newDiets }
+    })
+  }
+  const handleAllergiesOtherChange = (e) => {
+    setFormAnswers((prev) => ({ ...prev, allergiesOther: e.target.value }))
+  }
+
+  // Step 5: distance & location handlers
+  const handleDistanceChange = (e) => {
+    const value = Number(e.target.value)
+    setFormAnswers((prev) => ({ ...prev, distanceKm: value }))
+  }
+  const handleLocationModeChange = (mode) => {
+    setFormAnswers((prev) => ({ ...prev, locationMode: mode }))
+  }
+  const handleCustomLocationChange = (e) => {
+    setFormAnswers((prev) => ({ ...prev, customLocation: e.target.value }))
+  }
+
+  // Finish action: close modal and optionally compute a recommendation
+  const handleFinish = () => {
+    // For now, pick a simple recommendation from hot restaurants
+    const rec =
+      hotRestaurants[Math.floor(Math.random() * hotRestaurants.length)]
+    setRecommendation(rec)
+    setShowFindModal(false)
+  }
 
   const sponsored = [
     {
@@ -79,7 +128,7 @@ export default function App() {
       description: "Authentic Indian curries.",
       menu: ["Butter Chicken", "Paneer Masala", "Naan"],
     },
-  ];
+  ]
 
   const hotRestaurants = [
     {
@@ -106,64 +155,64 @@ export default function App() {
       description: "Fun tacos and nachos.",
       menu: ["Tacos", "Nachos", "Quesadilla"],
     },
-  ];
+  ]
 
   const sampleReservations = [
     { restaurant: "Ocean Grill", date: "2025-10-01", time: "19:00", people: 2 },
     { restaurant: "Sushi Zen", date: "2025-10-05", time: "20:00", people: 3 },
-  ];
+  ]
 
   // Filter logic
   const filteredSponsored = sponsored.filter(
     (r) =>
       r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       r.cuisine.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
   const filteredHot = hotRestaurants.filter(
     (r) =>
       r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       r.cuisine.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
 
   // -------------------- Find Me a Place --------------------
   const handleMagicClick = () => {
-    setShowFindModal(true);
-    setFindStep(0);
-  };
+    setShowFindModal(true)
+    setFindStep(0)
+  }
 
   const handleRecommendationClick = () => {
-    const previousRestaurants = hotRestaurants.slice(0, 2); // example previous
-    const allOptions = [...previousRestaurants, ...sponsored];
-    const rec = allOptions[Math.floor(Math.random() * allOptions.length)];
-    setRecommendation(rec);
-    setShowFindModal(false);
-  };
+    const previousRestaurants = hotRestaurants.slice(0, 2) // example previous
+    const allOptions = [...previousRestaurants, ...sponsored]
+    const rec = allOptions[Math.floor(Math.random() * allOptions.length)]
+    setRecommendation(rec)
+    setShowFindModal(false)
+  }
 
   // -------------------- Carousel auto-scroll --------------------
   useEffect(() => {
-    const track = carouselRef.current;
-    if (!track) return;
-    const scrollStep = 250;
+    const track = carouselRef.current
+    if (!track) return
+    const scrollStep = 250
     const interval = setInterval(() => {
       if (!isPaused) {
         if (track.scrollLeft + track.clientWidth >= track.scrollWidth) {
-          track.scrollTo({ left: 0, behavior: "smooth" });
+          track.scrollTo({ left: 0, behavior: "smooth" })
         } else {
-          track.scrollBy({ left: scrollStep, behavior: "smooth" });
+          track.scrollBy({ left: scrollStep, behavior: "smooth" })
         }
       }
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [isPaused]);
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [isPaused])
 
   const openModal = (restaurant) => {
-    setSelectedRestaurant(restaurant);
-    setClosing(false);
-  };
+    setSelectedRestaurant(restaurant)
+    setClosing(false)
+  }
   const closeModal = () => {
-    setClosing(true);
-    setTimeout(() => setSelectedRestaurant(null), 300);
-  };
+    setClosing(true)
+    setTimeout(() => setSelectedRestaurant(null), 300)
+  }
 
   return (
     <div className="app-container">
@@ -340,7 +389,7 @@ export default function App() {
                 className="progress"
                 style={{
                   width:
-                    findStep === 0 ? "0%" : `${((findStep + 1) / 5) * 100}%`,
+                    findStep === 0 ? "0%" : `${((findStep + 1) / 6) * 100}%`,
                 }}
               ></div>
             </div>
@@ -355,13 +404,13 @@ export default function App() {
                     className="btn btn-primary"
                     onClick={() => {
                       // Pick random recommendation
-                      const previousRestaurants = hotRestaurants.slice(0, 2);
-                      const allOptions = [...previousRestaurants, ...sponsored];
+                      const previousRestaurants = hotRestaurants.slice(0, 2)
+                      const allOptions = [...previousRestaurants, ...sponsored]
                       const rec =
                         allOptions[
                           Math.floor(Math.random() * allOptions.length)
-                        ];
-                      setRecommendation(rec); // show suggestion
+                        ]
+                      setRecommendation(rec) // show suggestion
                     }}
                   >
                     Based on previous restaurants & sponsored suggestions
@@ -381,8 +430,8 @@ export default function App() {
                   <div
                     className="recommendation-box clickable"
                     onClick={() => {
-                      openModal(recommendation);
-                      setShowFindModal(false);
+                      openModal(recommendation)
+                      setShowFindModal(false)
                     }}
                   >
                     <p className="recommend-title">{recommendation.name}</p>
@@ -457,13 +506,121 @@ export default function App() {
             )}
 
             {findStep === 3 && (
-              <div className="form-step">{/* Question 3 */}</div>
+              <div className="form-step">
+                <h2>What price range are you looking for?</h2>
+                <input
+                  type="range"
+                  min="1"
+                  max="4"
+                  step="1"
+                  value={formAnswers.priceRange}
+                  onChange={handlePriceChange}
+                />
+                <div className="small-text">
+                  Selected: {"$".repeat(formAnswers.priceRange)}
+                </div>
+                <div className="small-text">1 = Budget • 4 = Premium</div>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setFindStep(4)}
+                >
+                  Next
+                </button>
+              </div>
             )}
             {findStep === 4 && (
-              <div className="form-step">{/* Question 4 */}</div>
+              <div className="form-step">
+                <h2>Allergies or diets to have in mind?</h2>
+                <div className="checkbox-group">
+                  {[
+                    "Vegetarian",
+                    "Vegan",
+                    "Gluten-free",
+                    "Nut allergy",
+                    "Dairy-free",
+                    "Halal",
+                    "Kosher",
+                  ].map((option) => (
+                    <label key={option} className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={formAnswers.diets.includes(option)}
+                        onChange={() => toggleDiet(option)}
+                      />
+                      {option}
+                    </label>
+                  ))}
+                </div>
+                <input
+                  type="text"
+                  value={formAnswers.allergiesOther}
+                  onChange={handleAllergiesOtherChange}
+                  placeholder="Other allergies/diets (optional)"
+                  className="form-input"
+                />
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setFindStep(5)}
+                >
+                  Next
+                </button>
+              </div>
             )}
             {findStep === 5 && (
-              <div className="form-step">{/* Question 5 */}</div>
+              <div className="form-step">
+                <h2>How far are you willing to travel?</h2>
+                <div className="form-options">
+                  <label className="checkbox-label">
+                    <input
+                      type="radio"
+                      name="locationMode"
+                      checked={formAnswers.locationMode === "current"}
+                      onChange={() => handleLocationModeChange("current")}
+                    />
+                    Use my current location
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="radio"
+                      name="locationMode"
+                      checked={formAnswers.locationMode === "custom"}
+                      onChange={() => handleLocationModeChange("custom")}
+                    />
+                    Choose a starting point
+                  </label>
+                </div>
+                {formAnswers.locationMode === "custom" && (
+                  <input
+                    type="text"
+                    value={formAnswers.customLocation}
+                    onChange={handleCustomLocationChange}
+                    placeholder="Enter address or area"
+                    className="form-input"
+                  />
+                )}
+                <label className="small-text">
+                  Distance: {formAnswers.distanceKm} km
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="50"
+                  step="1"
+                  value={formAnswers.distanceKm}
+                  onChange={handleDistanceChange}
+                />
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => setFindStep(4)}
+                  >
+                    Back
+                  </button>
+                  <button className="btn btn-primary" onClick={handleFinish}>
+                    Finish
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -491,5 +648,5 @@ export default function App() {
         </button>
       </div>
     </div>
-  );
+  )
 }
