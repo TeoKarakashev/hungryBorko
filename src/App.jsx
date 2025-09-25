@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react"
-import "./index.css"
+import { useState, useEffect, useRef } from 'react'
+import './index.css'
 
 export default function App() {
   const [recommendation, setRecommendation] = useState(null)
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState('')
   const [selectedRestaurant, setSelectedRestaurant] = useState(null)
   const [isPaused, setIsPaused] = useState(false)
   const carouselRef = useRef(null)
@@ -17,17 +17,17 @@ export default function App() {
 
   // Add to your state for form answers
   const [formAnswers, setFormAnswers] = useState({
-    foodPreference: "",
+    foodPreference: '',
     atmosphere: [], // array to store selected atmosphere options
     // Step 3: price range (1=budget, 4=premium)
     priceRange: 2,
     // Step 4: allergies/diets
     diets: [],
-    allergiesOther: "",
+    allergiesOther: '',
     // Step 5: distance & location
     distanceKm: 5,
-    locationMode: "current", // 'current' | 'custom'
-    customLocation: "",
+    locationMode: 'current', // 'current' | 'custom'
+    customLocation: '',
   })
 
   // Handler for atmosphere checkboxes
@@ -94,72 +94,72 @@ export default function App() {
 
   const sponsored = [
     {
-      name: "Ocean Grill",
-      cuisine: "Seafood",
+      name: 'Ocean Grill',
+      cuisine: 'Seafood',
       sponsored: true,
-      description: "Fresh seafood with ocean view.",
-      menu: ["Grilled Salmon", "Lobster Bisque", "Shrimp Pasta"],
+      description: 'Fresh seafood with ocean view.',
+      menu: ['Grilled Salmon', 'Lobster Bisque', 'Shrimp Pasta'],
     },
     {
-      name: "Pasta Palace",
-      cuisine: "Italian",
+      name: 'Pasta Palace',
+      cuisine: 'Italian',
       sponsored: true,
-      description: "Authentic Italian pasta dishes.",
-      menu: ["Spaghetti Carbonara", "Lasagna", "Fettuccine Alfredo"],
+      description: 'Authentic Italian pasta dishes.',
+      menu: ['Spaghetti Carbonara', 'Lasagna', 'Fettuccine Alfredo'],
     },
     {
-      name: "Sakura Sushi",
-      cuisine: "Japanese",
+      name: 'Sakura Sushi',
+      cuisine: 'Japanese',
       sponsored: true,
-      description: "Sushi and Japanese delicacies.",
-      menu: ["Sushi Platter", "Miso Soup", "Tempura"],
+      description: 'Sushi and Japanese delicacies.',
+      menu: ['Sushi Platter', 'Miso Soup', 'Tempura'],
     },
     {
-      name: "El Rancho",
-      cuisine: "Mexican",
+      name: 'El Rancho',
+      cuisine: 'Mexican',
       sponsored: true,
-      description: "Spicy and tasty Mexican cuisine.",
-      menu: ["Tacos", "Burritos", "Guacamole"],
+      description: 'Spicy and tasty Mexican cuisine.',
+      menu: ['Tacos', 'Burritos', 'Guacamole'],
     },
     {
-      name: "Curry House",
-      cuisine: "Indian",
+      name: 'Curry House',
+      cuisine: 'Indian',
       sponsored: true,
-      description: "Authentic Indian curries.",
-      menu: ["Butter Chicken", "Paneer Masala", "Naan"],
+      description: 'Authentic Indian curries.',
+      menu: ['Butter Chicken', 'Paneer Masala', 'Naan'],
     },
   ]
 
   const hotRestaurants = [
     {
-      name: "Spicy Street",
-      cuisine: "Indian",
-      description: "Street-style Indian dishes.",
-      menu: ["Chaat", "Biryani", "Samosa"],
+      name: 'Spicy Street',
+      cuisine: 'Indian',
+      description: 'Street-style Indian dishes.',
+      menu: ['Chaat', 'Biryani', 'Samosa'],
     },
     {
-      name: "Sushi Zen",
-      cuisine: "Japanese",
-      description: "Fresh sushi daily.",
-      menu: ["Nigiri", "Sashimi", "Udon"],
+      name: 'Sushi Zen',
+      cuisine: 'Japanese',
+      description: 'Fresh sushi daily.',
+      menu: ['Nigiri', 'Sashimi', 'Udon'],
     },
     {
-      name: "Burger Barn",
-      cuisine: "American",
-      description: "Burgers with fresh ingredients.",
-      menu: ["Cheeseburger", "Fries", "Milkshake"],
+      name: 'Burger Barn',
+      cuisine: 'American',
+      description: 'Burgers with fresh ingredients.',
+      menu: ['Cheeseburger', 'Fries', 'Milkshake'],
     },
     {
-      name: "Taco Fiesta",
-      cuisine: "Mexican",
-      description: "Fun tacos and nachos.",
-      menu: ["Tacos", "Nachos", "Quesadilla"],
+      name: 'Taco Fiesta',
+      cuisine: 'Mexican',
+      description: 'Fun tacos and nachos.',
+      menu: ['Tacos', 'Nachos', 'Quesadilla'],
     },
   ]
 
   const sampleReservations = [
-    { restaurant: "Ocean Grill", date: "2025-10-01", time: "19:00", people: 2 },
-    { restaurant: "Sushi Zen", date: "2025-10-05", time: "20:00", people: 3 },
+    { restaurant: 'Ocean Grill', date: '2025-10-01', time: '19:00', people: 2 },
+    { restaurant: 'Sushi Zen', date: '2025-10-05', time: '20:00', people: 3 },
   ]
 
   // Filter logic
@@ -196,9 +196,9 @@ export default function App() {
     const interval = setInterval(() => {
       if (!isPaused) {
         if (track.scrollLeft + track.clientWidth >= track.scrollWidth) {
-          track.scrollTo({ left: 0, behavior: "smooth" })
+          track.scrollTo({ left: 0, behavior: 'smooth' })
         } else {
-          track.scrollBy({ left: scrollStep, behavior: "smooth" })
+          track.scrollBy({ left: scrollStep, behavior: 'smooth' })
         }
       }
     }, 3000)
@@ -234,7 +234,7 @@ export default function App() {
           <button
             className="carousel-btn prev-btn"
             onClick={() =>
-              carouselRef.current.scrollBy({ left: -250, behavior: "smooth" })
+              carouselRef.current.scrollBy({ left: -250, behavior: 'smooth' })
             }
           >
             ◀
@@ -262,7 +262,7 @@ export default function App() {
           <button
             className="carousel-btn next-btn"
             onClick={() =>
-              carouselRef.current.scrollBy({ left: 250, behavior: "smooth" })
+              carouselRef.current.scrollBy({ left: 250, behavior: 'smooth' })
             }
           >
             ▶
@@ -296,11 +296,11 @@ export default function App() {
       {/* ---------- Restaurant Modal ---------- */}
       {selectedRestaurant && (
         <div
-          className={`modal-overlay ${closing ? "fade-out" : ""}`}
+          className={`modal-overlay ${closing ? 'fade-out' : ''}`}
           onClick={closeModal}
         >
           <div
-            className={`modal-content ${closing ? "slide-down" : ""}`}
+            className={`modal-content ${closing ? 'slide-down' : ''}`}
             onClick={(e) => e.stopPropagation()}
           >
             <button className="modal-close" onClick={closeModal}>
@@ -384,15 +384,16 @@ export default function App() {
             </button>
 
             {/* Progress Bar */}
-            <div className="progress-bar">
-              <div
-                className="progress"
-                style={{
-                  width:
-                    findStep === 0 ? "0%" : `${((findStep + 1) / 6) * 100}%`,
-                }}
-              ></div>
-            </div>
+            {findStep > 0 && (
+              <div className="progress-bar">
+                <div
+                  className="progress"
+                  style={{
+                    width: findStep === 1 ? '0%' : `${(findStep / 6) * 100}%`,
+                  }}
+                ></div>
+              </div>
+            )}
 
             {/* Step 0: Choice between suggestion or form */}
             {findStep === 0 && (
@@ -479,11 +480,11 @@ export default function App() {
                 <h2>What kind of atmosphere do you prefer?</h2>
                 <div className="checkbox-group">
                   {[
-                    "Quiet",
-                    "Busy",
-                    "Family-friendly",
-                    "Romantic",
-                    "Casual",
+                    'Quiet',
+                    'Busy',
+                    'Family-friendly',
+                    'Romantic',
+                    'Casual',
                   ].map((option) => (
                     <label key={option} className="checkbox-label">
                       <input
@@ -517,7 +518,7 @@ export default function App() {
                   onChange={handlePriceChange}
                 />
                 <div className="small-text">
-                  Selected: {"$".repeat(formAnswers.priceRange)}
+                  Selected: {'$'.repeat(formAnswers.priceRange)}
                 </div>
                 <div className="small-text">1 = Budget • 4 = Premium</div>
                 <button
@@ -533,13 +534,13 @@ export default function App() {
                 <h2>Allergies or diets to have in mind?</h2>
                 <div className="checkbox-group">
                   {[
-                    "Vegetarian",
-                    "Vegan",
-                    "Gluten-free",
-                    "Nut allergy",
-                    "Dairy-free",
-                    "Halal",
-                    "Kosher",
+                    'Vegetarian',
+                    'Vegan',
+                    'Gluten-free',
+                    'Nut allergy',
+                    'Dairy-free',
+                    'Halal',
+                    'Kosher',
                   ].map((option) => (
                     <label key={option} className="checkbox-label">
                       <input
@@ -574,8 +575,8 @@ export default function App() {
                     <input
                       type="radio"
                       name="locationMode"
-                      checked={formAnswers.locationMode === "current"}
-                      onChange={() => handleLocationModeChange("current")}
+                      checked={formAnswers.locationMode === 'current'}
+                      onChange={() => handleLocationModeChange('current')}
                     />
                     Use my current location
                   </label>
@@ -583,13 +584,13 @@ export default function App() {
                     <input
                       type="radio"
                       name="locationMode"
-                      checked={formAnswers.locationMode === "custom"}
-                      onChange={() => handleLocationModeChange("custom")}
+                      checked={formAnswers.locationMode === 'custom'}
+                      onChange={() => handleLocationModeChange('custom')}
                     />
                     Choose a starting point
                   </label>
                 </div>
-                {formAnswers.locationMode === "custom" && (
+                {formAnswers.locationMode === 'custom' && (
                   <input
                     type="text"
                     value={formAnswers.customLocation}
@@ -609,19 +610,24 @@ export default function App() {
                   value={formAnswers.distanceKm}
                   onChange={handleDistanceChange}
                 />
-                <div style={{ display: "flex", gap: "8px" }}>
+                <div style={{ display: 'flex', gap: '8px' }}>
                   <button
                     className="btn btn-secondary"
-                    onClick={() => setFindStep(4)}
+                    onClick={() => setFindStep(5)}
                   >
                     Back
                   </button>
-                  <button className="btn btn-primary" onClick={handleFinish}>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => setFindStep(6)}
+                  >
                     Finish
                   </button>
                 </div>
               </div>
             )}
+
+            {findStep === 6 && <div>Last step LOADER...</div>}
           </div>
         </div>
       )}
