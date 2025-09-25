@@ -5,6 +5,8 @@ import HotRestaurants from "./components/HotRestaurants"
 import RestaurantModal from "./components/RestaurantModal"
 import BottomNav from "./components/BottomNav"
 import FindPlaceModal from "./components/FindPlaceModal"
+import ReservationsModal from "./components/ReservationsModal"
+import ProfileModal from "./components/ProfileModal"
 
 export default function App() {
   const [recommendation, setRecommendation] = useState(null)
@@ -161,53 +163,16 @@ export default function App() {
         closing={closing}
       />
 
-      {/* ---------- Profile Modal ---------- */}
-      {showProfileModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowProfileModal(false)}
-        >
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="modal-close"
-              onClick={() => setShowProfileModal(false)}
-            >
-              ✖
-            </button>
-            <h2>Your Profile</h2>
-            <p>Name: John Doe</p>
-            <p>Email: johndoe@example.com</p>
-            <p>Member since: 2025</p>
-            <button className="btn btn-primary">Edit Profile</button>
-          </div>
-        </div>
-      )}
+      <ProfileModal
+        isOpen={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+      />
 
-      {/* ---------- Reservations Modal ---------- */}
-      {showReservationsModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowReservationsModal(false)}
-        >
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="modal-close"
-              onClick={() => setShowReservationsModal(false)}
-            >
-              ✖
-            </button>
-            <h2>Your Reservations</h2>
-            <ul className="reservation-list">
-              {sampleReservations.map((res, idx) => (
-                <li key={idx}>
-                  <strong>{res.restaurant}</strong> - {res.date} at {res.time} (
-                  {res.people} people)
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+      <ReservationsModal
+        isOpen={showReservationsModal}
+        onClose={() => setShowReservationsModal(false)}
+        reservations={sampleReservations}
+      />
 
       <FindPlaceModal
         isOpen={showFindModal}
